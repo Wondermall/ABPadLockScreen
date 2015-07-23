@@ -35,6 +35,8 @@
 @property (nonatomic, strong) UIColor *titleLabelColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIFont *subtitleLabelFont UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIColor *subtitleLabelColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *deleteButtonBorderColor UI_APPEARANCE_SELECTOR;
+
 
 @property (nonatomic, strong) UIView* backgroundView;
 

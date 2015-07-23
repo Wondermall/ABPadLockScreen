@@ -23,7 +23,6 @@
 #import "ABPadLockScreenView.h"
 #import "ABPadButton.h"
 #import "ABPinSelectionView.h"
-#import "UIColor+HexValue.h"
 
 #define animationLength 0.15
 #define IS_IPHONE5 ([UIScreen mainScreen].bounds.size.height==568)
@@ -395,6 +394,7 @@
     self.subtitle.textColor = self.subtitleLabelColor;
     self.subtitle.font = self.subtitleLabelFont;
 
+    self.deleteButton.layer.borderColor = self.deleteButtonBorderColor.CGColor;
 }
 
 #pragma mark -
@@ -506,7 +506,6 @@
     self.deleteButton.frame = deleteButtonFrame;
     self.deleteButton.layer.cornerRadius = deleteButtonFrame.size.width / 2;
     self.deleteButton.layer.borderWidth = 1.5f;
-    self.deleteButton.layer.borderColor = [UIColor colorWithHexValue:@"#868686"].CGColor;
     [self.deleteButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
     [self.contentView addSubview:self.deleteButton];
 }
