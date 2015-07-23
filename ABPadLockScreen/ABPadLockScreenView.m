@@ -23,6 +23,7 @@
 #import "ABPadLockScreenView.h"
 #import "ABPadButton.h"
 #import "ABPinSelectionView.h"
+#import "UIColor+HexValue.h"
 
 #define animationLength 0.15
 #define IS_IPHONE5 ([UIScreen mainScreen].bounds.size.height==568)
@@ -81,21 +82,28 @@
     if (self)
     {
         [self setDefaultStyles];
-		
-		_contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, MIN(frame.size.height, 568.0f))];
-		_contentView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 400, MIN(frame.size.height, 568.0f))];
+        _contentView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
 		_contentView.center = self.center;
 		[self addSubview:_contentView];
         
         _requiresRotationCorrection = NO;
         
         _enterPasscodeLabel = [self standardLabel];
-        _enterPasscodeLabel.text = NSLocalizedString(@"Enter Passcode", @"");
-        
+        _enterPasscodeLabel.text = NSLocalizedString(@"Choose a 4-digit code", @"");
+
+        _title = [self standardLabel];
+        _title.text = @"Protect your cards with a pin code";
+
+        _subtitle = [self standardLabel];
+        _subtitle.text = @"You will be asked to type this pin code\n every time you submit an order";
+        _subtitle.numberOfLines = 0;
+
         _detailLabel = [self standardLabel];
         
-        _buttonOne = [[ABPadButton alloc] initWithFrame:CGRectZero number:1 letters:nil];
         _buttonTwo = [[ABPadButton alloc] initWithFrame:CGRectZero number:2 letters:@"ABC"];
+        _buttonOne = [[ABPadButton alloc] initWithFrame:CGRectZero number:1 letters:nil];
         _buttonThree = [[ABPadButton alloc] initWithFrame:CGRectZero number:3 letters:@"DEF"];
         
         _buttonFour = [[ABPadButton alloc] initWithFrame:CGRectZero number:4 letters:@"GHI"];
@@ -108,26 +116,17 @@
         
         _buttonZero = [[ABPadButton alloc] initWithFrame:CGRectZero number:0 letters:nil];
         
-		UIButtonType buttonType = UIButtonTypeSystem;
-		if(NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_6_1)
-		{
-			buttonType = UIButtonTypeCustom;
-		}
+		UIButtonType buttonType = UIButtonTypeCustom;
 		
 		_cancelButton = [UIButton buttonWithType:buttonType];
         [_cancelButton setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
-		_cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        
+
         _deleteButton = [UIButton buttonWithType:buttonType];
-        [_deleteButton setTitle:NSLocalizedString(@"Delete", @"") forState:UIControlStateNormal];
-		_deleteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        _deleteButton.alpha = 0.0f;
-        
+        [_deleteButton setTitle:NSLocalizedString(@"DELETE", @"") forState:UIControlStateNormal];
+
 		_okButton = [UIButton buttonWithType:buttonType];
-		[_okButton setTitle:NSLocalizedString(@"OK", @"") forState:UIControlStateNormal];
-		_okButton.alpha = 0.0f;
-		_okButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-		
+		[_okButton setTitle:NSLocalizedString(@"NEXT", @"") forState:UIControlStateNormal];
+
         // default to NO
         _complexPin = NO;
     }
@@ -141,6 +140,8 @@
     [super layoutSubviews];
     [self performLayout];
 	[self prepareAppearance];
+    NSLog(@">>>>>>> LockScreenView frame: %@", NSStringFromCGRect(self.frame));
+    NSLog(@">>>>>>> LockScreenView.content frame: %@", NSStringFromCGRect(self.contentView.frame));
 }
 
 #pragma mark -
@@ -181,8 +182,7 @@
 {
     __weak ABPadLockScreenView *weakSelf = self;
     [self performAnimations:^{
-        weakSelf.cancelButton.alpha = 1.0f;
-        weakSelf.deleteButton.alpha = 0.0f;
+        weakSelf.deleteButton.enabled = NO;
     } animated:animated completion:completion];
 }
 
@@ -190,8 +190,7 @@
 {
     __weak ABPadLockScreenView *weakSelf = self;
     [self performAnimations:^{
-        weakSelf.cancelButton.alpha = 0.0f;
-        weakSelf.deleteButton.alpha = 1.0f;
+        weakSelf.deleteButton.enabled = YES;
     } animated:animated completion:completion];
 }
 
@@ -199,7 +198,7 @@
 {
 	__weak ABPadLockScreenView *weakSelf = self;
     [self performAnimations:^{
-        weakSelf.okButton.alpha = show ? 1.0f : 0.0f;
+        weakSelf.okButton.enabled = NO;
     } animated:animated completion:completion];
 }
 
@@ -303,7 +302,7 @@
 	if(NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
 	{
 		NSAttributedString* digitsTextFieldAttrStr = [[NSAttributedString alloc] initWithString:[@"" stringByPaddingToLength:length withString:@" " startingAtIndex:0]
-																					 attributes:@{NSKernAttributeName: @4,
+																					 attributes:@{NSKernAttributeName: @1,
 																								  NSFontAttributeName: [UIFont boldSystemFontOfSize:18]}];
 		[UIView transitionWithView:self.digitsTextField duration:animationLength options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
 			self.digitsTextField.attributedText = digitsTextFieldAttrStr;
@@ -390,6 +389,12 @@
     self.deleteButton.titleLabel.font = self.deleteCancelLabelFont;
 
 	[self.okButton setTitleColor:self.labelColor forState:UIControlStateNormal];
+
+    self.title.textColor = self.titleLabelColor;
+    self.title.font = self.titleLabelFont;
+    self.subtitle.textColor = self.subtitleLabelColor;
+    self.subtitle.font = self.subtitleLabelFont;
+
 }
 
 #pragma mark -
@@ -414,10 +419,16 @@
 	{
 		top = NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_6_1 ? 30 : 80;;
 	}
-	
+
     self.enterPasscodeLabel.frame = CGRectMake(([self correctWidth]/2) - 150, top, 300, 23);
     [self.contentView addSubview:self.enterPasscodeLabel];
-	
+
+    self.title.frame = CGRectMake(([self correctWidth]/2) - 150, 10, 300, 23);
+    [self.contentView addSubview:self.title];
+
+    self.subtitle.frame = CGRectMake(([self correctWidth]/2) - 150, 30, 300, 60);
+    [self.contentView addSubview:self.subtitle];
+
 	CGFloat pinSelectionTop = self.enterPasscodeLabel.frame.origin.y + self.enterPasscodeLabel.frame.size.height + 17.5;
 
 	if(self.isComplexPin)
@@ -433,7 +444,7 @@
 	}
 	else
 	{
-		CGFloat pinPadding = 25;
+		CGFloat pinPadding = 5;
 		CGFloat pinRowWidth = (ABPinSelectionViewWidth * SIMPLE_PIN_LENGTH) + (pinPadding * (SIMPLE_PIN_LENGTH - 1));
 		
 		CGFloat selectionViewLeft = ([self correctWidth]/2) - (pinRowWidth/2);
@@ -481,26 +492,22 @@
     
     [self setUpButton:self.buttonZero left:centerButtonLeft top:zeroRowTop];
     
-	CGRect deleteCancelButtonFrame = CGRectMake(rightButtonLeft, zeroRowTop + ABPadButtonHeight + 25, ABPadButtonWidth, 20);
-	if(!IS_IPHONE5)
-	{
-		//Bring it higher for small device screens
-		deleteCancelButtonFrame = CGRectMake(rightButtonLeft, zeroRowTop + ABPadButtonHeight - 20, ABPadButtonWidth, 20);
-	}
-	
-	if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-	{
-		//Center it with zero button
-		deleteCancelButtonFrame = CGRectMake(rightButtonLeft, zeroRowTop + (ABPadButtonHeight / 2 - 10), ABPadButtonWidth, 20);
-	}
-	
+	CGRect nextButtonFrame = CGRectMake(rightButtonLeft, zeroRowTop + ABPadButtonHeight + 25, ABPadButtonWidth, ABPadButtonHeight);
+	CGRect deleteButtonFrame = CGRectMake(lefButtonLeft, zeroRowTop , ABPadButtonWidth, ABPadButtonHeight);
+
     if (!self.cancelButtonDisabled)
     {
-        self.cancelButton.frame = deleteCancelButtonFrame;
+        self.cancelButton.frame = CGRectMake(0, self.frame.size.height - ABPadButtonHeight, ABPadButtonWidth, 50);
+        self.cancelButton.backgroundColor = [UIColor greenColor];
+        [self.cancelButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
         [self.contentView addSubview:self.cancelButton];
     }
     
-    self.deleteButton.frame = deleteCancelButtonFrame;
+    self.deleteButton.frame = deleteButtonFrame;
+    self.deleteButton.layer.cornerRadius = deleteButtonFrame.size.width / 2;
+    self.deleteButton.layer.borderWidth = 1.5f;
+    self.deleteButton.layer.borderColor = [UIColor colorWithHexValue:@"#868686"].CGColor;
+    [self.deleteButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
     [self.contentView addSubview:self.deleteButton];
 }
 
@@ -518,7 +525,7 @@
                                      ABPinSelectionViewWidth,
                                      ABPinSelectionViewHeight);
     [self.contentView addSubview:selectionView];
-    [self setRoundedView:selectionView toDiameter:15];
+    [self setRectWithRoundedCornersView:selectionView withCornerRadius:3];
 }
 
 - (void)performAnimations:(void (^)(void))animations animated:(BOOL)animated completion:(void (^)(BOOL finished))completion
@@ -560,6 +567,14 @@
     roundedView.frame = newFrame;
     roundedView.clipsToBounds = YES;
     roundedView.layer.cornerRadius = newSize / 2.0;
+}
+
+- (void)setRectWithRoundedCornersView:(UIView *)view withCornerRadius:(CGFloat)radius;
+{
+//    CGRect newFrame = CGRectMake(view.frame.origin.x, view.frame.origin.y, newSize, newSize);
+    view.frame = view.frame;
+    view.clipsToBounds = YES;
+    view.layer.cornerRadius = radius;
 }
 
 @end

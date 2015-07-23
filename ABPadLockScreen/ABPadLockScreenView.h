@@ -31,11 +31,18 @@
 @property (nonatomic, strong) UIFont *deleteCancelLabelFont UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIColor *labelColor UI_APPEARANCE_SELECTOR;
 
+@property (nonatomic, strong) UIFont *titleLabelFont UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *titleLabelColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIFont *subtitleLabelFont UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *subtitleLabelColor UI_APPEARANCE_SELECTOR;
+
 @property (nonatomic, strong) UIView* backgroundView;
 
 @property (nonatomic, assign) BOOL cancelButtonDisabled;
 
 @property (nonatomic, strong, readonly) UILabel *enterPasscodeLabel;
+@property (nonatomic, strong, readonly) UILabel *title;
+@property (nonatomic, strong, readonly) UILabel *subtitle;
 @property (nonatomic, strong, readonly) UILabel *detailLabel;
 
 @property (nonatomic, strong, readonly) UIButton *buttonOne;
