@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 #import "ABPinSelectionView.h"
-#import "UIColor+HexValue.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define animationLength 0.15
@@ -85,7 +84,7 @@
 - (void)prepareApperance
 {
     self.selectedView.backgroundColor = self.selectedColor;
-    self.layer.borderColor = [UIColor colorWithHexValue:@"#898989"].CGColor;// [self.selectedColor CGColor];
+    self.layer.borderColor = self.borderColor.CGColor;
     self.backgroundColor = [UIColor clearColor];
 }
 

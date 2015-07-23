@@ -28,6 +28,7 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated completion:(void (^)(BOOL finished))completion;
 
 @property (nonatomic, strong) UIColor *selectedColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *borderColor UI_APPEARANCE_SELECTOR;
 
 @end
 
