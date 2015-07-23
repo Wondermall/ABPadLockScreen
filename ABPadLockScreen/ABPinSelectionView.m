@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import "ABPinSelectionView.h"
+#import "UIColor+HexValue.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define animationLength 0.15
@@ -46,11 +47,13 @@
     {
         [self setDefaultStyles];
         self.layer.borderWidth = 1.5f;
-        
+
         _selectedView = ({
             UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
             view.alpha = 0.0f;
             view.backgroundColor = _selectedColor;
+            view.layer.borderColor = [UIColor clearColor].CGColor;
+            view.layer.borderWidth = 1.0f;
             view;
         });
     }
@@ -82,13 +85,13 @@
 - (void)prepareApperance
 {
     self.selectedView.backgroundColor = self.selectedColor;
-    self.layer.borderColor = [self.selectedColor CGColor];
+    self.layer.borderColor = [UIColor colorWithHexValue:@"#898989"].CGColor;// [self.selectedColor CGColor];
     self.backgroundColor = [UIColor clearColor];
 }
 
 - (void)performLayout
 {
-    self.selectedView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    self.selectedView.frame = CGRectMake(3, 3, self.frame.size.width-6, self.frame.size.height-6);
     [self addSubview:self.selectedView];
 }
 
@@ -108,5 +111,5 @@
 
 @end
 
-CGFloat const ABPinSelectionViewWidth = 10;
-CGFloat const ABPinSelectionViewHeight = 10;
+CGFloat const ABPinSelectionViewWidth = 25;
+CGFloat const ABPinSelectionViewHeight = 12;
