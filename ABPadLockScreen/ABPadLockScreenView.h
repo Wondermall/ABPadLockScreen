@@ -45,7 +45,6 @@
 @property (nonatomic, strong, readonly) UILabel *enterPasscodeLabel;
 @property (nonatomic, strong, readonly) UILabel *title;
 @property (nonatomic, strong, readonly) UILabel *subtitle;
-@property (nonatomic, strong, readonly) UILabel *detailLabel;
 
 @property (nonatomic, strong, readonly) UIButton *buttonOne;
 @property (nonatomic, strong, readonly) UIButton *buttonTwo;

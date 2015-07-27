@@ -82,10 +82,11 @@
     {
         [self setDefaultStyles];
 
-        _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 400, MIN(frame.size.height, 568.0f))];
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 330, MIN(frame.size.height, 520.0f))];
         _contentView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
 		_contentView.center = self.center;
-		[self addSubview:_contentView];
+        _contentView.backgroundColor = [UIColor whiteColor];
+        [self addSubview:_contentView];
         
         _requiresRotationCorrection = NO;
         
@@ -99,8 +100,6 @@
         _subtitle.text = @"You will be asked to type this pin code\n every time you submit an order";
         _subtitle.numberOfLines = 0;
 
-        _detailLabel = [self standardLabel];
-        
         _buttonTwo = [[ABPadButton alloc] initWithFrame:CGRectZero number:2 letters:@"ABC"];
         _buttonOne = [[ABPadButton alloc] initWithFrame:CGRectZero number:1 letters:nil];
         _buttonThree = [[ABPadButton alloc] initWithFrame:CGRectZero number:3 letters:@"DEF"];
@@ -119,12 +118,17 @@
 		
 		_cancelButton = [UIButton buttonWithType:buttonType];
         [_cancelButton setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
+		_cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
 
         _deleteButton = [UIButton buttonWithType:buttonType];
-        [_deleteButton setTitle:NSLocalizedString(@"DELETE", @"") forState:UIControlStateNormal];
+        [_deleteButton setTitle:NSLocalizedString(@"Delete", @"") forState:UIControlStateNormal];
+		_deleteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        _deleteButton.alpha = 0.0f;
 
 		_okButton = [UIButton buttonWithType:buttonType];
-		[_okButton setTitle:NSLocalizedString(@"NEXT", @"") forState:UIControlStateNormal];
+		[_okButton setTitle:NSLocalizedString(@"OK", @"") forState:UIControlStateNormal];
+		_okButton.alpha = 0.0f;
+		_okButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 
         // default to NO
         _complexPin = NO;
@@ -181,7 +185,8 @@
 {
     __weak ABPadLockScreenView *weakSelf = self;
     [self performAnimations:^{
-        weakSelf.deleteButton.enabled = NO;
+        weakSelf.cancelButton.alpha = 1.0f;
+        weakSelf.deleteButton.alpha = 0.0f;
     } animated:animated completion:completion];
 }
 
@@ -189,7 +194,8 @@
 {
     __weak ABPadLockScreenView *weakSelf = self;
     [self performAnimations:^{
-        weakSelf.deleteButton.enabled = YES;
+        weakSelf.cancelButton.alpha = 0.0f;
+        weakSelf.deleteButton.alpha = 1.0f;
     } animated:animated completion:completion];
 }
 
@@ -204,26 +210,15 @@
 - (void)updateDetailLabelWithString:(NSString *)string animated:(BOOL)animated completion:(void (^)(BOOL finished))completion
 {
     CGFloat length = (animated) ? animationLength : 0.0;
-    CGFloat labelWidth = 15; // padding
-	if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
-		labelWidth += [string sizeWithAttributes:@{NSFontAttributeName:self.detailLabelFont}].width;
-	else
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        labelWidth += [string sizeWithFont: self.detailLabelFont].width;
-#pragma clang diagnostic pop
-    
+
     CATransition *animation = [CATransition animation];
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     animation.type = kCATransitionFade;
     animation.duration = length;
-    [self.detailLabel.layer addAnimation:animation forKey:@"kCATransitionFade"];
+    [self.enterPasscodeLabel.layer addAnimation:animation forKey:@"kCATransitionFade"];
     
-    self.detailLabel.text = string;
+    self.enterPasscodeLabel.text = string;
 
-	CGFloat pinSelectionTop = self.enterPasscodeLabel.frame.origin.y + self.enterPasscodeLabel.frame.size.height + 17.5;
-	
-    self.detailLabel.frame = CGRectMake(([self correctWidth]/2) - 150, pinSelectionTop + 30, 300, 23);
 }
 
 - (void)lockViewAnimated:(BOOL)animated completion:(void (^)(BOOL finished))completion
@@ -378,8 +373,8 @@
 	
 	[self updatePinTextfieldWithLength:0];
 	
-    self.detailLabel.textColor = self.labelColor;
-    self.detailLabel.font = self.detailLabelFont;
+    self.enterPasscodeLabel.textColor = self.labelColor;
+    self.enterPasscodeLabel.font = self.detailLabelFont;
     
     [self.cancelButton setTitleColor:self.labelColor forState:UIControlStateNormal];
     self.cancelButton.titleLabel.font = self.deleteCancelLabelFont;
@@ -429,7 +424,7 @@
     self.subtitle.frame = CGRectMake(([self correctWidth]/2) - 150, 30, 300, 60);
     [self.contentView addSubview:self.subtitle];
 
-	CGFloat pinSelectionTop = self.enterPasscodeLabel.frame.origin.y + self.enterPasscodeLabel.frame.size.height + 17.5;
+	CGFloat pinSelectionTop = self.enterPasscodeLabel.frame.origin.y + self.enterPasscodeLabel.frame.size.height + 14;
 
 	if(self.isComplexPin)
 	{
@@ -454,14 +449,12 @@
 			selectionViewLeft+=ABPinSelectionViewWidth + pinPadding;
 		}
 	}
-	
-    self.detailLabel.frame = CGRectMake(([self correctWidth]/2) - 150, pinSelectionTop + 30, 300, 23);
-    [self.contentView addSubview:self.detailLabel];
+
 }
 
 - (void)layoutButtonArea
 {
-    CGFloat horizontalButtonPadding = 20;
+    CGFloat horizontalButtonPadding = 10;
     CGFloat verticalButtonPadding = 10;
     
     CGFloat buttonRowWidth = (ABPadButtonWidth * 3) + (horizontalButtonPadding * 2);
@@ -469,10 +462,9 @@
     CGFloat lefButtonLeft = ([self correctWidth]/2) - (buttonRowWidth/2) + 0.5;
     CGFloat centerButtonLeft = lefButtonLeft + ABPadButtonWidth + horizontalButtonPadding;
     CGFloat rightButtonLeft = centerButtonLeft + ABPadButtonWidth + horizontalButtonPadding;
-    
-    CGFloat topRowTop = self.detailLabel.frame.origin.y + self.detailLabel.frame.size.height + 15;
-    
-    if (!IS_IPHONE5) topRowTop = self.detailLabel.frame.origin.y + self.detailLabel.frame.size.height + 10;
+
+    UIView *digit = self.digitsArray[0];
+    CGFloat topRowTop = digit.frame.origin.y + digit.frame.size.height + 27;
     
     CGFloat middleRowTop = topRowTop + ABPadButtonHeight + verticalButtonPadding;
     CGFloat bottomRowTop = middleRowTop + ABPadButtonHeight + verticalButtonPadding;
@@ -492,21 +484,26 @@
     
     [self setUpButton:self.buttonZero left:centerButtonLeft top:zeroRowTop];
     
-	CGRect nextButtonFrame = CGRectMake(rightButtonLeft, zeroRowTop + ABPadButtonHeight + 25, ABPadButtonWidth, ABPadButtonHeight);
-	CGRect deleteButtonFrame = CGRectMake(lefButtonLeft, zeroRowTop , ABPadButtonWidth, ABPadButtonHeight);
+	CGRect deleteCancelButtonFrame = CGRectMake(rightButtonLeft, zeroRowTop + ABPadButtonHeight + 25, ABPadButtonWidth, 20);
+	if(!IS_IPHONE5)
+	{
+		//Bring it higher for small device screens
+		deleteCancelButtonFrame = CGRectMake(rightButtonLeft, zeroRowTop + ABPadButtonHeight - 20, ABPadButtonWidth, 20);
+	}
+
+	if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+	{
+		//Center it with zero button
+		deleteCancelButtonFrame = CGRectMake(rightButtonLeft, zeroRowTop + (ABPadButtonHeight / 2 - 10), ABPadButtonWidth, 20);
+	}
 
     if (!self.cancelButtonDisabled)
     {
-        self.cancelButton.frame = CGRectMake(0, self.frame.size.height - ABPadButtonHeight, ABPadButtonWidth, 50);
-        self.cancelButton.backgroundColor = [UIColor greenColor];
-        [self.cancelButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
+        self.cancelButton.frame = deleteCancelButtonFrame;
         [self.contentView addSubview:self.cancelButton];
     }
     
-    self.deleteButton.frame = deleteButtonFrame;
-    self.deleteButton.layer.cornerRadius = deleteButtonFrame.size.width / 2;
-    self.deleteButton.layer.borderWidth = 1.5f;
-    [self.deleteButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
+    self.deleteButton.frame = deleteCancelButtonFrame;
     [self.contentView addSubview:self.deleteButton];
 }
 
@@ -514,7 +511,7 @@
 {
     button.frame = CGRectMake(left, top, ABPadButtonWidth, ABPadButtonHeight);
     [self.contentView addSubview:button];
-    [self setRoundedView:button toDiameter:75];
+    [self setRoundedView:button toDiameter:ABPadButtonWidth];
 }
 
 - (void)setUpPinSelectionView:(ABPinSelectionView *)selectionView left:(CGFloat)left top:(CGFloat)top

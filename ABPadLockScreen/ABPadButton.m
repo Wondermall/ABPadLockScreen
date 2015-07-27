@@ -48,7 +48,7 @@
         
         self.accessibilityValue = [NSString stringWithFormat:@"PinButton%ld", (long)number];
         self.tag = number;
-        self.layer.borderWidth = 1.5f;
+        self.layer.borderWidth = 2.7f;
         _numberLabel = ({
             UILabel *label = [self standardLabel];
             label.text = [NSString stringWithFormat:@"%ld", (long)number];
@@ -189,5 +189,5 @@
 
 @end
 
-CGFloat const ABPadButtonHeight = 75;
-CGFloat const ABPadButtonWidth = 75;
+CGFloat const ABPadButtonHeight = 67;
+CGFloat const ABPadButtonWidth = 67;

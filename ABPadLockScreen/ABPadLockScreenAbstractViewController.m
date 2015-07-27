@@ -50,6 +50,7 @@
         _errorVibrateEnabled = NO;
         _currentPin = @"";
         _complexPin = NO; //default to NO
+        self.view.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
@@ -69,7 +70,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     CGRect bounds = self.view.bounds;
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
         if (bounds.size.width > bounds.size.height) {
@@ -79,13 +80,24 @@
             bounds.size.width = width;
         }
     }
-    
+
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        bounds.size.height = 520;
+        bounds.size.width = 330;
+    }
+
     self.view = [[ABPadLockScreenView alloc] initWithFrame:bounds complexPin:self.isComplexPin];
     
     [self setUpButtonMapping];
     [lockScreenView.cancelButton addTarget:self action:@selector(cancelButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
     [lockScreenView.deleteButton addTarget:self action:@selector(deleteButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
 	[lockScreenView.okButton addTarget:self action:@selector(okButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    self.view.superview.bounds = CGRectMake(0, 0, 330, 520);
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -143,11 +155,6 @@
 {
     self.title = title;
     lockScreenView.enterPasscodeLabel.text = title;
-}
-
-- (void)setSubtitleText:(NSString *)text
-{
-    lockScreenView.detailLabel.text = text;
 }
 
 - (void)setCancelButtonText:(NSString *)text
