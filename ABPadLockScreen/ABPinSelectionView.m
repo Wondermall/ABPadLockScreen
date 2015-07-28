@@ -45,14 +45,14 @@
     if (self)
     {
         [self setDefaultStyles];
-        self.layer.borderWidth = 1.5f;
+        self.layer.borderWidth = 2.0f;
 
         _selectedView = ({
             UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
             view.alpha = 0.0f;
             view.backgroundColor = _selectedColor;
             view.layer.borderColor = [UIColor clearColor].CGColor;
-            view.layer.borderWidth = 1.0f;
+            view.layer.borderWidth = 2.0f;
             view;
         });
     }
@@ -90,7 +90,7 @@
 
 - (void)performLayout
 {
-    self.selectedView.frame = CGRectMake(3, 3, self.frame.size.width-6, self.frame.size.height-6);
+    self.selectedView.frame = CGRectMake(3.5f, 3.5f, self.frame.size.width-7, self.frame.size.height-7);
     [self addSubview:self.selectedView];
 }
 
@@ -111,4 +111,4 @@
 @end
 
 CGFloat const ABPinSelectionViewWidth = 25;
-CGFloat const ABPinSelectionViewHeight = 12;
+CGFloat const ABPinSelectionViewHeight = 13;

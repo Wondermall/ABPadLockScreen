@@ -116,13 +116,11 @@
     
     if (self.remainingAttempts > 1)
     {
-        [lockScreenView updateDetailLabelWithString:[NSString stringWithFormat:@"%ld %@", (long)self.remainingAttempts, self.pluralAttemptsLeftString]
-                                           animated:YES completion:nil];
+        [lockScreenView updateDetailLabelWithString:[NSString stringWithFormat:@"%ld %@", (long) self.remainingAttempts, self.pluralAttemptsLeftString] animated:YES completion:nil markAsAlert:NO];
     }
     else if (self.remainingAttempts == 1)
     {
-        [lockScreenView updateDetailLabelWithString:[NSString stringWithFormat:@"%ld %@", (long)self.remainingAttempts, self.singleAttemptLeftString]
-                                           animated:YES completion:nil];
+        [lockScreenView updateDetailLabelWithString:[NSString stringWithFormat:@"%ld %@", (long) self.remainingAttempts, self.singleAttemptLeftString] animated:YES completion:nil markAsAlert:NO];
     }
     else if (self.remainingAttempts == 0)
     {
@@ -154,7 +152,7 @@
 #pragma mark - Pin Selection
 - (void)lockScreen
 {
-    [lockScreenView updateDetailLabelWithString:[NSString stringWithFormat:@"%@", self.lockedOutString] animated:YES completion:nil];
+    [lockScreenView updateDetailLabelWithString:[NSString stringWithFormat:@"%@", self.lockedOutString] animated:YES completion:nil markAsAlert:NO];
     [lockScreenView lockViewAnimated:YES completion:nil];
     
     if ([self.lockScreenDelegate respondsToSelector:@selector(attemptsExpiredForPadLockScreenViewController:)])

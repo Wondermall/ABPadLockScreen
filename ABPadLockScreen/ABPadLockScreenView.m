@@ -97,7 +97,17 @@
         _title.text = @"Protect your cards with a pin code";
 
         _subtitle = [self standardLabel];
-        _subtitle.text = @"You will be asked to type this pin code\n every time you submit an order";
+
+        NSString *subtiteText = @"You will be asked to type this pin code\n every time you submit an order";
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:subtiteText];
+        NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+        paragrahStyle.minimumLineHeight = 15.0f;
+        paragrahStyle.maximumLineHeight = 15.0f;
+        paragrahStyle.alignment = NSTextAlignmentCenter;
+        [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, subtiteText.length)];
+
+
+        _subtitle.attributedText = attributedString;
         _subtitle.numberOfLines = 0;
 
         _buttonTwo = [[ABPadButton alloc] initWithFrame:CGRectZero number:2 letters:@"ABC"];
@@ -145,6 +155,8 @@
 	[self prepareAppearance];
     NSLog(@">>>>>>> LockScreenView frame: %@", NSStringFromCGRect(self.frame));
     NSLog(@">>>>>>> LockScreenView.content frame: %@", NSStringFromCGRect(self.contentView.frame));
+    NSLog(@">>>>>>> LockScreenView.title frame: %@", NSStringFromCGRect(self.title.frame));
+    NSLog(@">>>>>>> LockScreenView.subtitle frame: %@", NSStringFromCGRect(self.subtitle.frame));
 }
 
 #pragma mark -
@@ -207,17 +219,18 @@
     } animated:animated completion:completion];
 }
 
-- (void)updateDetailLabelWithString:(NSString *)string animated:(BOOL)animated completion:(void (^)(BOOL finished))completion
-{
+- (void)updateDetailLabelWithString:(NSString *)string animated:(BOOL)animated completion:(void (^)(BOOL finished))completion markAsAlert:(BOOL)markAsAlert {
     CGFloat length = (animated) ? animationLength : 0.0;
 
     CATransition *animation = [CATransition animation];
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     animation.type = kCATransitionFade;
     animation.duration = length;
-    [self.enterPasscodeLabel.layer addAnimation:animation forKey:@"kCATransitionFade"];
-    
     self.enterPasscodeLabel.text = string;
+    self.enterPasscodeLabel.textColor = markAsAlert ? [UIColor redColor] : self.labelColor;
+    [self.enterPasscodeLabel.layer addAnimation:animation forKey:@"kCATransitionFade"];
+
+
 
 }
 
@@ -373,9 +386,6 @@
 	
 	[self updatePinTextfieldWithLength:0];
 	
-    self.enterPasscodeLabel.textColor = self.labelColor;
-    self.enterPasscodeLabel.font = self.detailLabelFont;
-    
     [self.cancelButton setTitleColor:self.labelColor forState:UIControlStateNormal];
     self.cancelButton.titleLabel.font = self.deleteCancelLabelFont;
     
@@ -403,28 +413,17 @@
 
 - (void)layoutTitleArea
 {
-    CGFloat top = NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_6_1 ? 15 : 65;
-	
-	if(!IS_IPHONE5)
-	{
-		top = NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_6_1 ? 5 : 20;
-	}
-	
-	if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-	{
-		top = NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_6_1 ? 30 : 80;;
-	}
-
-    self.enterPasscodeLabel.frame = CGRectMake(([self correctWidth]/2) - 150, top, 300, 23);
-    [self.contentView addSubview:self.enterPasscodeLabel];
-
-    self.title.frame = CGRectMake(([self correctWidth]/2) - 150, 10, 300, 23);
+    self.title.frame = CGRectMake(([self correctWidth]/2) - 150, 14, 300, 23);
     [self.contentView addSubview:self.title];
 
-    self.subtitle.frame = CGRectMake(([self correctWidth]/2) - 150, 30, 300, 60);
+    self.subtitle.frame = CGRectMake(([self correctWidth]/2) - 150, self.title.frame.origin.y + self.title.frame.size.height + 1, 300, 60);
     [self.contentView addSubview:self.subtitle];
 
-	CGFloat pinSelectionTop = self.enterPasscodeLabel.frame.origin.y + self.enterPasscodeLabel.frame.size.height + 14;
+    self.enterPasscodeLabel.frame = CGRectMake(([self correctWidth]/2) - 150, self.subtitle.frame.origin.y + self.subtitle.frame.size.height + 7, 300, 23);
+    [self.contentView addSubview:self.enterPasscodeLabel];
+
+
+    CGFloat pinSelectionTop = self.enterPasscodeLabel.frame.origin.y + self.enterPasscodeLabel.frame.size.height + 10;
 
 	if(self.isComplexPin)
 	{
@@ -464,7 +463,7 @@
     CGFloat rightButtonLeft = centerButtonLeft + ABPadButtonWidth + horizontalButtonPadding;
 
     UIView *digit = self.digitsArray[0];
-    CGFloat topRowTop = digit.frame.origin.y + digit.frame.size.height + 27;
+    CGFloat topRowTop = digit.frame.origin.y + digit.frame.size.height + 35;
     
     CGFloat middleRowTop = topRowTop + ABPadButtonHeight + verticalButtonPadding;
     CGFloat bottomRowTop = middleRowTop + ABPadButtonHeight + verticalButtonPadding;

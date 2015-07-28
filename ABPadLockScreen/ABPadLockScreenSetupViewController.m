@@ -66,7 +66,7 @@
     {
         _subtitleLabelText = subtitleLabelText;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [lockScreenView updateDetailLabelWithString:_subtitleLabelText animated:NO completion:nil];
+            [lockScreenView updateDetailLabelWithString:_subtitleLabelText animated:NO completion:nil markAsAlert:NO];
         });
     }
     return self;
@@ -103,7 +103,7 @@
 {
     self.enteredPin = self.currentPin;
     self.currentPin = @"";
-    [lockScreenView updateDetailLabelWithString:self.pinConfirmationText animated:YES completion:nil];
+    [lockScreenView updateDetailLabelWithString:self.pinConfirmationText animated:YES completion:nil markAsAlert:NO];
     [lockScreenView resetAnimated:YES];
 }
          
@@ -118,7 +118,7 @@
     }
     else
     {
-        [lockScreenView updateDetailLabelWithString:self.pinNotMatchedText animated:YES completion:nil];
+        [lockScreenView updateDetailLabelWithString:self.pinNotMatchedText animated:YES completion:nil markAsAlert:YES];
 		[lockScreenView animateFailureNotification];
         [lockScreenView resetAnimated:YES];
         self.enteredPin = nil;
