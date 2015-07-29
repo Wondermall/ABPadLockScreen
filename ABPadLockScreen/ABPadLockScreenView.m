@@ -493,7 +493,7 @@
 	if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 	{
 		//Center it with zero button
-		deleteCancelButtonFrame = CGRectMake(rightButtonLeft, zeroRowTop + (ABPadButtonHeight / 2 - 10), ABPadButtonWidth, 20);
+		deleteCancelButtonFrame = CGRectMake(rightButtonLeft, zeroRowTop + 8 , ABPadButtonWidth, 50);
 	}
 
     if (!self.cancelButtonDisabled)
