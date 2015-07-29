@@ -153,10 +153,6 @@
     [super layoutSubviews];
     [self performLayout];
 	[self prepareAppearance];
-    NSLog(@">>>>>>> LockScreenView frame: %@", NSStringFromCGRect(self.frame));
-    NSLog(@">>>>>>> LockScreenView.content frame: %@", NSStringFromCGRect(self.contentView.frame));
-    NSLog(@">>>>>>> LockScreenView.title frame: %@", NSStringFromCGRect(self.title.frame));
-    NSLog(@">>>>>>> LockScreenView.subtitle frame: %@", NSStringFromCGRect(self.subtitle.frame));
 }
 
 #pragma mark -
