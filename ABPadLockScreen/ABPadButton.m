@@ -48,7 +48,7 @@
         
         self.accessibilityValue = [NSString stringWithFormat:@"PinButton%ld", (long)number];
         self.tag = number;
-        self.layer.borderWidth = 2.7f;
+        self.layer.borderWidth = 2.0f;
         _numberLabel = ({
             UILabel *label = [self standardLabel];
             label.text = [NSString stringWithFormat:@"%ld", (long)number];
