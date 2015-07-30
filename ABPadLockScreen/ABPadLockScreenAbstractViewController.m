@@ -98,7 +98,7 @@
 }
 
 - (CGFloat) getHeight {
-    return self.unlockMode ? 420 : 520;
+    return self.unlockMode ? 440 : 520;
 }
 
 - (void)viewWillLayoutSubviews
