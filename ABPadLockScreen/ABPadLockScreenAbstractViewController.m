@@ -29,6 +29,8 @@
 
 @interface ABPadLockScreenAbstractViewController ()
 
+@property(nonatomic) BOOL unlockMode;
+
 - (void)setUpButtonMapping;
 - (void)buttonSelected:(UIButton *)sender;
 - (void)cancelButtonSelected:(UIButton *)sender;
@@ -50,17 +52,17 @@
         _errorVibrateEnabled = NO;
         _currentPin = @"";
         _complexPin = NO; //default to NO
-        self.view.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
 
-- (id)initWithComplexPin:(BOOL)complexPin
+- (id)initWithComplexPin:(BOOL)complexPin inUnlockMode:(BOOL) unlockMode
 {
     self = [self init];
     if (self)
     {
         _complexPin = complexPin;
+        self.unlockMode = unlockMode;
     }
     return self;
 }
@@ -82,12 +84,17 @@
     }
 
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-        bounds.size.height = 520;
+        if (self.unlockMode) {
+            bounds.size.height = 400;
+        } else {
+            bounds.size.height = 520;
+        };
         bounds.size.width = 330;
     }
 
-    self.view = [[ABPadLockScreenView alloc] initWithFrame:bounds complexPin:self.isComplexPin];
-    
+    self.view = [[ABPadLockScreenView alloc] initWithFrame:bounds complexPin:self.isComplexPin unlockMode:self.unlockMode];
+    self.view.backgroundColor = [UIColor clearColor];
+
     [self setUpButtonMapping];
     [lockScreenView.cancelButton addTarget:self action:@selector(cancelButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
     [lockScreenView.deleteButton addTarget:self action:@selector(deleteButtonSelected:) forControlEvents:UIControlEventTouchUpInside];

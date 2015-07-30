@@ -46,7 +46,7 @@
 #pragma mark - Init Methods
 - (instancetype)initWithDelegate:(id<ABPadLockScreenViewControllerDelegate>)delegate complexPin:(BOOL)complexPin
 {
-    self = [super initWithComplexPin:complexPin];
+    self = [super initWithComplexPin:complexPin inUnlockMode:YES];
     if (self)
     {
         self.delegate = delegate;

@@ -34,6 +34,8 @@
 @property (nonatomic, strong) UIView* contentView;
 @property (nonatomic, strong) UIView* backgroundBlurringView;
 
+@property(nonatomic) BOOL unlockMode;
+
 - (void)setDefaultStyles;
 - (void)prepareAppearance;
 - (void)performLayout;
@@ -54,12 +56,13 @@
 
 #pragma mark -
 #pragma mark - Init Methods
-- (id)initWithFrame:(CGRect)frame complexPin:(BOOL)complexPin
-{
-    self = [self initWithFrame:frame];
+
+- (id)initWithFrame:(CGRect)frame complexPin:(BOOL)complexPin unlockMode:(BOOL)mode {
+    self = [self initWithFrame:frame unlockMode:mode];
     if (self)
     {
         _complexPin = complexPin;
+        _unlockMode = mode;
 		
 		if(complexPin)
 		{
@@ -75,14 +78,16 @@
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame unlockMode:(BOOL) unlockMode
 {
     self = [super initWithFrame:frame];
     if (self)
     {
         [self setDefaultStyles];
 
-        _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 330, MIN(frame.size.height, 520.0f))];
+        CGFloat height = MIN(frame.size.height, 520.0f);
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 330, height)];
+        
         _contentView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
 		_contentView.center = self.center;
         _contentView.backgroundColor = [UIColor whiteColor];
@@ -91,24 +96,13 @@
         _requiresRotationCorrection = NO;
         
         _enterPasscodeLabel = [self standardLabel];
-        _enterPasscodeLabel.text = NSLocalizedString(@"Choose a 4-digit code", @"");
-
-        _title = [self standardLabel];
-        _title.text = @"Protect your cards with a pin code";
-
-        _subtitle = [self standardLabel];
-
-        NSString *subtiteText = @"You will be asked to type this pin code\n every time you submit an order";
-        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:subtiteText];
-        NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-        paragrahStyle.minimumLineHeight = 15.0f;
-        paragrahStyle.maximumLineHeight = 15.0f;
-        paragrahStyle.alignment = NSTextAlignmentCenter;
-        [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, subtiteText.length)];
+        _enterPasscodeLabel.text = self.passcodeLabelText;
 
 
-        _subtitle.attributedText = attributedString;
-        _subtitle.numberOfLines = 0;
+        if (!unlockMode) {
+            _title = [self standardLabel];
+            _subtitle = [self standardLabel];
+        }
 
         _buttonTwo = [[ABPadButton alloc] initWithFrame:CGRectZero number:2 letters:@"ABC"];
         _buttonOne = [[ABPadButton alloc] initWithFrame:CGRectZero number:1 letters:nil];
@@ -390,10 +384,25 @@
 
 	[self.okButton setTitleColor:self.labelColor forState:UIControlStateNormal];
 
-    self.title.textColor = self.titleLabelColor;
-    self.title.font = self.titleLabelFont;
-    self.subtitle.textColor = self.subtitleLabelColor;
-    self.subtitle.font = self.subtitleLabelFont;
+
+    if(!self.unlockMode) {
+        self.title.text = self.titleText;
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:self.subtitleText];
+        NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+        paragrahStyle.minimumLineHeight = 15.0f;
+        paragrahStyle.maximumLineHeight = 15.0f;
+        paragrahStyle.alignment = NSTextAlignmentCenter;
+        [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, self.subtitleText.length)];
+
+
+        self.subtitle.attributedText = attributedString;
+        self.subtitle.numberOfLines = 0;
+
+        self.title.textColor = self.titleLabelColor;
+        self.title.font = self.titleLabelFont;
+        self.subtitle.textColor = self.subtitleLabelColor;
+        self.subtitle.font = self.subtitleLabelFont;
+    }
 
     self.deleteButton.layer.borderColor = self.deleteButtonBorderColor.CGColor;
 }

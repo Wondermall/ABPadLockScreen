@@ -48,7 +48,7 @@
 
 - (instancetype)initWithDelegate:(id<ABPadLockScreenSetupViewControllerDelegate>)delegate complexPin:(BOOL)complexPin
 {
-    self = [super initWithComplexPin:complexPin];
+    self = [super initWithComplexPin:complexPin inUnlockMode:NO];
     if (self)
     {
         self.delegate = delegate;

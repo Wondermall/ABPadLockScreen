@@ -38,7 +38,7 @@
 @property (nonatomic, assign) BOOL tapSoundEnabled; //No by Default
 @property (nonatomic, assign) BOOL errorVibrateEnabled; //No by Default
 
-- (id)initWithComplexPin:(BOOL)complexPin;
+- (id)initWithComplexPin:(BOOL)complexPin inUnlockMode:(BOOL)unlockMode;
 
 - (void)newPinSelected:(NSInteger)pinNumber;
 - (void)deleteFromPin;

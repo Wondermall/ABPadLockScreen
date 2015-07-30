@@ -77,6 +77,11 @@
 @property (nonatomic, strong, readonly) NSArray *digitsArray;
 @property (nonatomic, strong, readonly) UITextField *digitsTextField;
 
+@property(nonatomic, copy) NSString *passcodeLabelText UI_APPEARANCE_SELECTOR;
+@property(nonatomic, copy) NSString *titleText UI_APPEARANCE_SELECTOR;
+@property(nonatomic, copy) NSString *subtitleText UI_APPEARANCE_SELECTOR;
+
+
 - (void)showCancelButtonAnimated:(BOOL)animated completion:(void (^)(BOOL finished))completion;
 - (void)showDeleteButtonAnimated:(BOOL)animated completion:(void (^)(BOOL finished))completion;
 - (void)showOKButton:(BOOL)show animated:(BOOL)animated completion:(void (^)(BOOL finished))completion;
@@ -90,6 +95,6 @@
 
 - (void)updatePinTextfieldWithLength:(NSUInteger)length;
 
-- (id)initWithFrame:(CGRect)frame complexPin:(BOOL)complexPin;
+- (id)initWithFrame:(CGRect)frame complexPin:(BOOL)complexPin unlockMode:(BOOL)mode;
 
 @end
