@@ -116,11 +116,11 @@
     
     if (self.remainingAttempts > 1)
     {
-        [lockScreenView updateDetailLabelWithString:[NSString stringWithFormat:@"%ld %@", (long) self.remainingAttempts, self.pluralAttemptsLeftString] animated:YES completion:nil markAsAlert:NO];
+        [lockScreenView updateDetailLabelWithString:self.pluralAttemptsLeftString animated:YES completion:nil markAsAlert:YES];
     }
     else if (self.remainingAttempts == 1)
     {
-        [lockScreenView updateDetailLabelWithString:[NSString stringWithFormat:@"%ld %@", (long) self.remainingAttempts, self.singleAttemptLeftString] animated:YES completion:nil markAsAlert:NO];
+        [lockScreenView updateDetailLabelWithString:self.singleAttemptLeftString animated:YES completion:nil markAsAlert:YES];
     }
     else if (self.remainingAttempts == 0)
     {

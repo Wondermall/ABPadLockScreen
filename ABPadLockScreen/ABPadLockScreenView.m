@@ -96,8 +96,6 @@
         _requiresRotationCorrection = NO;
         
         _enterPasscodeLabel = [self standardLabel];
-        _enterPasscodeLabel.text = self.passcodeLabelText;
-
 
         if (!unlockMode) {
             _title = [self standardLabel];
@@ -384,6 +382,7 @@
 
 	[self.okButton setTitleColor:self.labelColor forState:UIControlStateNormal];
 
+    self.enterPasscodeLabel.text = self.passcodeLabelText;
 
     if(!self.unlockMode) {
         self.title.text = self.titleText;
@@ -424,7 +423,14 @@
     self.subtitle.frame = CGRectMake(([self correctWidth]/2) - 150, self.title.frame.origin.y + self.title.frame.size.height + 1, 300, 60);
     [self.contentView addSubview:self.subtitle];
 
-    self.enterPasscodeLabel.frame = CGRectMake(([self correctWidth]/2) - 150, self.subtitle.frame.origin.y + self.subtitle.frame.size.height + 7, 300, 23);
+    CGFloat enterPasscodeTop;
+    if (self.subtitle) {
+        enterPasscodeTop = self.subtitle.frame.origin.y + self.subtitle.frame.size.height + 7;
+    } else {
+        enterPasscodeTop = 20;
+    }
+
+    self.enterPasscodeLabel.frame = CGRectMake(([self correctWidth]/2) - 150, enterPasscodeTop, 300, 23);
     [self.contentView addSubview:self.enterPasscodeLabel];
 
 

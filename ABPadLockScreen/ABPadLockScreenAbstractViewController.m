@@ -84,11 +84,7 @@
     }
 
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-        if (self.unlockMode) {
-            bounds.size.height = 400;
-        } else {
-            bounds.size.height = 520;
-        };
+        bounds.size.height = [self getHeight];
         bounds.size.width = 330;
     }
 
@@ -101,10 +97,14 @@
 	[lockScreenView.okButton addTarget:self action:@selector(okButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
 }
 
+- (CGFloat) getHeight {
+    return self.unlockMode ? 420 : 520;
+}
+
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    self.view.superview.bounds = CGRectMake(0, 0, 330, 520);
+    self.view.superview.bounds = CGRectMake(0, 0, 330, [self getHeight]);
 }
 
 - (NSUInteger)supportedInterfaceOrientations
