@@ -105,6 +105,7 @@
 {
     [super viewWillLayoutSubviews];
     self.view.superview.bounds = CGRectMake(0, 0, 330, [self getHeight]);
+    self.view.superview.layer.cornerRadius = 0;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
