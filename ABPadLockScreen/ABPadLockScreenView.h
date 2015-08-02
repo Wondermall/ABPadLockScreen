@@ -64,6 +64,7 @@
 @property (nonatomic, strong, readonly) UIButton *deleteButton;
 
 @property (nonatomic, strong, readonly) UIButton *okButton;
+@property (nonatomic, strong, readonly) UIButton *forgotPinCodeButton;
 
 /*
  Lazy loaded array that returns all the buttons ordered from 0-9
@@ -81,12 +82,17 @@
 @property(nonatomic, copy) NSString *titleText UI_APPEARANCE_SELECTOR;
 @property(nonatomic, copy) NSString *subtitleText UI_APPEARANCE_SELECTOR;
 
+@property(nonatomic, strong) UIColor *forgotPinCodeButtonColor UI_APPEARANCE_SELECTOR;
+@property(nonatomic, strong) UIFont *forgotPinCodeButtonFont UI_APPEARANCE_SELECTOR;
+@property(nonatomic, copy) NSString *forgotPinCodeButtonText UI_APPEARANCE_SELECTOR;
 
 - (void)showCancelButtonAnimated:(BOOL)animated completion:(void (^)(BOOL finished))completion;
 - (void)showDeleteButtonAnimated:(BOOL)animated completion:(void (^)(BOOL finished))completion;
 - (void)showOKButton:(BOOL)show animated:(BOOL)animated completion:(void (^)(BOOL finished))completion;
 
 - (void)updateDetailLabelWithString:(NSString *)string animated:(BOOL)animated completion:(void (^)(BOOL finished))completion markAsAlert:(BOOL)markAsAlert;
+
+- (void)showForgotPinCodeButton;
 
 - (void)lockViewAnimated:(BOOL)animated completion:(void (^)(BOOL finished))completion;
 

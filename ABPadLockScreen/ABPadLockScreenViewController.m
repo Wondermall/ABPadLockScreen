@@ -60,6 +60,12 @@
     return self;
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [lockScreenView.forgotPinCodeButton addTarget:self action:@selector(forgotPinCodeTapped:) forControlEvents:UIControlEventTouchUpInside];
+
+}
+
 #pragma mark -
 #pragma mark - Attempts
 - (void)setAllowedAttempts:(NSInteger)allowedAttempts
@@ -137,6 +143,10 @@
     {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     }
+
+    if (_totalAttempts == 3) {
+        [lockScreenView showForgotPinCodeButton];
+    }
 }
 
 - (BOOL)isPinValid:(NSString *)pin
@@ -160,5 +170,11 @@
         [self.lockScreenDelegate attemptsExpiredForPadLockScreenViewController:self];
     }
 }
+
+
+- (void)forgotPinCodeTapped:(id)forgotPinCodeTapped {
+    [self.lockScreenDelegate forgotMyPinCodeTapped:self];
+}
+
 
 @end

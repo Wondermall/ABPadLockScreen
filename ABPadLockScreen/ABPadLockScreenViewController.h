@@ -71,6 +71,8 @@
  */
 - (void)unlockWasCancelledForPadLockScreenViewController:(ABPadLockScreenViewController *)padLockScreenViewController;
 
+- (void)forgotMyPinCodeTapped:(ABPadLockScreenViewController *)padLockScreenViewController;
+
 @optional
 /**
  Called when the user has expired their attempts

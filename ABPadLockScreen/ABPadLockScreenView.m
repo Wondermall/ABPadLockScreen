@@ -33,6 +33,8 @@
 @property (nonatomic, assign) BOOL requiresRotationCorrection;
 @property (nonatomic, strong) UIView* contentView;
 @property (nonatomic, strong) UIView* backgroundBlurringView;
+@property (nonatomic, strong) UIButton *forgotPinCodeButton;
+
 
 @property(nonatomic) BOOL unlockMode;
 
@@ -132,6 +134,10 @@
 		_okButton.alpha = 0.0f;
 		_okButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 
+        _forgotPinCodeButton = [UIButton buttonWithType:buttonType];
+        _forgotPinCodeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        _forgotPinCodeButton.hidden = YES;
+
         // default to NO
         _complexPin = NO;
     }
@@ -143,8 +149,8 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self performLayout];
 	[self prepareAppearance];
+    [self performLayout];
 }
 
 #pragma mark -
@@ -217,8 +223,12 @@
     self.enterPasscodeLabel.text = string;
     self.enterPasscodeLabel.textColor = markAsAlert ? [UIColor redColor] : self.labelColor;
     [self.enterPasscodeLabel.layer addAnimation:animation forKey:@"kCATransitionFade"];
+}
 
-
+- (void)showForgotPinCodeButton {
+    [UIView animateWithDuration:0.2f animations:^{
+        self.forgotPinCodeButton.hidden = NO;
+    }];
 
 }
 
@@ -404,6 +414,10 @@
     }
 
     self.deleteButton.layer.borderColor = self.deleteButtonBorderColor.CGColor;
+
+    [self.forgotPinCodeButton setTitleColor:self.forgotPinCodeButtonColor forState:UIControlStateNormal];
+    self.forgotPinCodeButton.titleLabel.font =  self.forgotPinCodeButtonFont;
+    [self.forgotPinCodeButton setTitle:self.forgotPinCodeButtonText forState:UIControlStateNormal];
 }
 
 #pragma mark -
@@ -413,6 +427,8 @@
     [self layoutTitleArea];
     [self layoutButtonArea];
     _requiresRotationCorrection = YES;
+
+    NSLog(@"forgot %@", NSStringFromCGRect(self.forgotPinCodeButton.frame));
 }
 
 - (void)layoutTitleArea
@@ -515,6 +531,18 @@
     
     self.deleteButton.frame = deleteCancelButtonFrame;
     [self.contentView addSubview:self.deleteButton];
+
+
+    if (self.unlockMode) {
+        CGSize contentViewSize = self.contentView.bounds.size;
+        [self.forgotPinCodeButton sizeToFit];
+        CGSize btnFrame = self.forgotPinCodeButton.frame.size;
+        self.forgotPinCodeButton.frame = CGRectMake(contentViewSize.width - btnFrame.width - 15,
+                contentViewSize.height - btnFrame.height - 5,
+                btnFrame.width, btnFrame.height);
+        [self.contentView addSubview:self.forgotPinCodeButton];
+    }
+
 }
 
 - (void)setUpButton:(UIButton *)button left:(CGFloat)left top:(CGFloat)top
