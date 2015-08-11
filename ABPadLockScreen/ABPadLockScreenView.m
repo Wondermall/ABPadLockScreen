@@ -428,7 +428,6 @@
     [self layoutButtonArea];
     _requiresRotationCorrection = YES;
 
-    NSLog(@"forgot %@", NSStringFromCGRect(self.forgotPinCodeButton.frame));
 }
 
 - (void)layoutTitleArea
