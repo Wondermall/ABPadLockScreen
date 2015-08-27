@@ -156,6 +156,10 @@
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded:touches withEvent:event];
+    [self unselectButton];
+}
+
+- (void)unselectButton {
     __weak ABPadButton *weakSelf = self;
     [UIView animateWithDuration:animationLength
                           delay:0.0f
@@ -165,6 +169,12 @@
                          [weakSelf setHighlighted:NO];
     } completion:nil];
 }
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesCancelled:touches withEvent:event];
+    [self unselectButton];
+}
+
 
 - (void)setHighlighted:(BOOL)highlighted
 {
