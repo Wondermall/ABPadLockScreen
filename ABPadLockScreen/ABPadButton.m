@@ -93,8 +93,8 @@
     _borderColor = [UIColor whiteColor];
     _selectedColor = [UIColor lightGrayColor];
     _textColor = [UIColor whiteColor];
-    _hightlightedTextColor = [UIColor whiteColor];
-	
+    _hightlightedTextColor = [UIColor whiteColor];;
+
 	static NSString* fontName = @"HelveticaNeue-Thin";
 	
 	static dispatch_once_t onceToken;
@@ -113,11 +113,11 @@
 {
     self.selectedView.backgroundColor = self.selectedColor;
     self.layer.borderColor = [self.borderColor CGColor];
-    self.numberLabel.textColor = self.textColor;
-    self.numberLabel.highlightedTextColor = self.hightlightedTextColor;
+    self.numberLabel.textColor = self.numberLabelColor;
+    self.numberLabel.highlightedTextColor = self.highlightedNumberLabelColor;
     self.numberLabel.font = self.numberLabelFont;
-    self.lettersLabel.textColor = self.textColor;
-    self.lettersLabel.highlightedTextColor = self.hightlightedTextColor;
+    self.lettersLabel.textColor = self.letterLabelColor;
+    self.lettersLabel.highlightedTextColor = self.highlightedletterLabelColor;
     self.lettersLabel.font = self.letterLabelFont;
 }
 

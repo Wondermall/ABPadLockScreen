@@ -35,6 +35,10 @@
 @property (nonatomic, strong) UIColor *selectedColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIColor *textColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIColor *hightlightedTextColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *numberLabelColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *highlightedNumberLabelColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *letterLabelColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *highlightedletterLabelColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIFont *numberLabelFont UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIFont *letterLabelFont UI_APPEARANCE_SELECTOR;
 
