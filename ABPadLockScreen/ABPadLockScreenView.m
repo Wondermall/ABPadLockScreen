@@ -384,10 +384,10 @@
 	
 	[self updatePinTextfieldWithLength:0];
 	
-    [self.cancelButton setTitleColor:self.labelColor forState:UIControlStateNormal];
+    [self.cancelButton setTitleColor:self.deleteCancelLabelColor forState:UIControlStateNormal];
     self.cancelButton.titleLabel.font = self.deleteCancelLabelFont;
     
-    [self.deleteButton setTitleColor:self.labelColor forState:UIControlStateNormal];
+    [self.deleteButton setTitleColor:self.deleteCancelLabelColor forState:UIControlStateNormal];
     self.deleteButton.titleLabel.font = self.deleteCancelLabelFont;
 
 	[self.okButton setTitleColor:self.labelColor forState:UIControlStateNormal];
