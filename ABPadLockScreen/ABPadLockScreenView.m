@@ -221,7 +221,7 @@
     animation.type = kCATransitionFade;
     animation.duration = length;
     self.enterPasscodeLabel.text = string;
-    self.enterPasscodeLabel.textColor = markAsAlert ? [UIColor redColor] : self.labelColor;
+    self.enterPasscodeLabel.textColor = markAsAlert ? [UIColor colorWithRed:0.749 green:0.098 blue:0.024 alpha:1] : self.enterPasscodeLabelColor;
     [self.enterPasscodeLabel.layer addAnimation:animation forKey:@"kCATransitionFade"];
 }
 
@@ -376,7 +376,7 @@
 
 - (void)prepareAppearance
 {
-    self.enterPasscodeLabel.textColor = self.labelColor;
+    self.enterPasscodeLabel.textColor = self.enterPasscodeLabelColor;
     self.enterPasscodeLabel.font = self.enterPasscodeLabelFont;
     
 	self.digitsTextField.textColor = [(ABPadButton*)self.buttonZero borderColor];
@@ -384,10 +384,10 @@
 	
 	[self updatePinTextfieldWithLength:0];
 	
-    [self.cancelButton setTitleColor:self.labelColor forState:UIControlStateNormal];
+    [self.cancelButton setTitleColor:self.deleteCancelLabelColor forState:UIControlStateNormal];
     self.cancelButton.titleLabel.font = self.deleteCancelLabelFont;
     
-    [self.deleteButton setTitleColor:self.labelColor forState:UIControlStateNormal];
+    [self.deleteButton setTitleColor:self.deleteCancelLabelColor forState:UIControlStateNormal];
     self.deleteButton.titleLabel.font = self.deleteCancelLabelFont;
 
 	[self.okButton setTitleColor:self.labelColor forState:UIControlStateNormal];

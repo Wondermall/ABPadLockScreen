@@ -27,8 +27,10 @@
 @interface ABPadLockScreenView : UIView
 
 @property (nonatomic, strong) UIFont *enterPasscodeLabelFont UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *enterPasscodeLabelColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIFont *detailLabelFont UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIFont *deleteCancelLabelFont UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *deleteCancelLabelColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIColor *labelColor UI_APPEARANCE_SELECTOR;
 
 @property (nonatomic, strong) UIFont *titleLabelFont UI_APPEARANCE_SELECTOR;
