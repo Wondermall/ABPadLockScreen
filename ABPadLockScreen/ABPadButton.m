@@ -93,7 +93,7 @@
     _borderColor = [UIColor whiteColor];
     _selectedColor = [UIColor lightGrayColor];
     _textColor = [UIColor whiteColor];
-    _hightlightedTextColor = [UIColor whiteColor];;
+    _hightlightedTextColor = [UIColor whiteColor];
 
 	static NSString* fontName = @"HelveticaNeue-Thin";
 	
