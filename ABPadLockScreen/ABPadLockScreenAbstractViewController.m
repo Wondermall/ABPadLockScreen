@@ -89,7 +89,6 @@
     }
 
     self.view = [[ABPadLockScreenView alloc] initWithFrame:bounds complexPin:self.isComplexPin unlockMode:self.unlockMode];
-    self.view.backgroundColor = [UIColor clearColor];
 
     [self setUpButtonMapping];
     [lockScreenView.cancelButton addTarget:self action:@selector(cancelButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
@@ -101,14 +100,7 @@
     return self.unlockMode ? 460 : 520;
 }
 
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-    self.view.superview.bounds = CGRectMake(0, 0, 330, [self getHeight]);
-    self.view.superview.layer.cornerRadius = 0;
-}
-
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     UIUserInterfaceIdiom interfaceIdiom = [[UIDevice currentDevice] userInterfaceIdiom];
     if (interfaceIdiom == UIUserInterfaceIdiomPad) return UIInterfaceOrientationMaskAll;
