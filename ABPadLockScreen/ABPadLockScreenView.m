@@ -435,7 +435,7 @@
     self.title.frame = CGRectMake(([self correctWidth]/2) - 150, 14, 300, 23);
     [self.contentView addSubview:self.title];
 
-    self.subtitle.frame = CGRectMake(([self correctWidth]/2) - 150, self.title.frame.origin.y + self.title.frame.size.height + 1, 300, 60);
+    self.subtitle.frame = CGRectMake(([self correctWidth]/2) - 150, self.title.frame.origin.y + self.title.frame.size.height + 1, 300, 40);
     [self.contentView addSubview:self.subtitle];
 
     CGFloat enterPasscodeTop;
