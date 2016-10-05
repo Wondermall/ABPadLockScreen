@@ -136,7 +136,7 @@
 
         _forgotPinCodeButton = [UIButton buttonWithType:buttonType];
         _forgotPinCodeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-        _forgotPinCodeButton.hidden = YES;
+        _forgotPinCodeButton.hidden = NO;
 
         // default to NO
         _complexPin = NO;
@@ -536,7 +536,7 @@
         CGSize contentViewSize = self.contentView.bounds.size;
         [self.forgotPinCodeButton sizeToFit];
         CGSize btnFrame = self.forgotPinCodeButton.frame.size;
-        self.forgotPinCodeButton.frame = CGRectMake(contentViewSize.width - btnFrame.width - 15,
+        self.forgotPinCodeButton.frame = CGRectMake((contentViewSize.width - btnFrame.width)/2,
                 contentViewSize.height - btnFrame.height - 5,
                 btnFrame.width, btnFrame.height);
         [self.contentView addSubview:self.forgotPinCodeButton];
