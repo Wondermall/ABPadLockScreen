@@ -418,6 +418,8 @@
     [self.forgotPinCodeButton setTitleColor:self.forgotPinCodeButtonColor forState:UIControlStateNormal];
     self.forgotPinCodeButton.titleLabel.font =  self.forgotPinCodeButtonFont;
     [self.forgotPinCodeButton setTitle:self.forgotPinCodeButtonText forState:UIControlStateNormal];
+
+    self.contentView.layer.cornerRadius = 10;
 }
 
 #pragma mark -
